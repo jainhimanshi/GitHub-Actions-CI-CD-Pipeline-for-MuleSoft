@@ -1,0 +1,61 @@
+	# This workflow will build a MuleSoft project and is manually triggered for deployment.
+	
+	name: Manual workflow
+	
+	on:
+	  workflow_dispatch:
+	    branches: [main]
+	    inputs:
+	      name:
+	        description: 'prod deployment ?'
+	        default: 'yes'
+	        required: true
+	
+	jobs:
+	  build:
+	    runs-on: ubuntu-latest
+	    steps:
+	    - uses: actions/checkout@v2
+	    - uses: actions/cache@v1
+	      with:
+	        path: ~/.m2/repository
+	        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+	        restore-keys: |
+	          ${{ runner.os }}-maven-
+	    - name: Set up JDK 1.8
+	      uses: actions/setup-java@v1
+	      with:
+	        java-version: 1.8
+	    - name: Build
+	      run: mvn -B package --file pom.xml
+	    - name: Stamp artifact file name with commit hash
+	      run: |
+	        artifactName1=$(ls target/*.jar | head -1)
+	        commitHash=$(git rev-parse --short "$GITHUB_SHA")
+	        artifactName2=$(ls target/*.jar | head -1 | sed "s/.jar/.$commitHash.jar/g")
+	        mv $artifactName1 $artifactName2
+	    - uses: actions/upload-artifact@master
+	      with:
+	          name: artifacts
+	          path: target/*.jar
+	  deploy:
+	    needs: build
+	    runs-on: ubuntu-latest
+	    steps:    
+	    - uses: actions/checkout@v2
+	    - uses: actions/cache@v1
+	      with:
+	        path: ~/.m2/repository
+	        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+	        restore-keys: |
+	          ${{ runner.os }}-maven-
+	    - uses: actions/download-artifact@master
+	      with:
+	        name: artifacts
+	    - name: Deploy to CloudHub
+	      env:
+	        USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
+	        PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+	      run: |
+	        artifactName=$(ls *.jar | head -1)
+	        mvn package deploy -DmuleDeploy -Danypoint.env=Sandbox -Danypoint.appName=githubactionsci-cdpipeline -Danypoint.username=${{ secrets.ANYPOINT_USERNAME }} -Danypoint.password=${{ secrets.ANYPOINT_PASSWORD }}  -Danypoint.muleVersion=4.3.0 -Danypoint.region=us-west-1 -Danypoint.workers=2
