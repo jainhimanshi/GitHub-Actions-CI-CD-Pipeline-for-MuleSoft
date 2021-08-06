@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="2b129a5f-a259-4ceb-89a6-a90f23031b15" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="githubactionsci-cdpipelineFlow" doc:id="7d4c50c7-14bd-4980-ae1f-45a51bd60fc1" >
+		<http:listener doc:name="Listener" doc:id="732b2f39-c662-478a-9698-bdbef1e91f42" config-ref="HTTP_Listener_config" path="/githubActions"/>
+		<logger level="INFO" doc:name="LOG-Github Actions CI/CD Pipeline started" doc:id="fb6672da-1763-47bc-a957-f78c56cfd931" message='#["Github Actions CI/CD Pipeline started at: "++ now()]'/>
+		<ee:transform doc:name="Github Actions CI/CD Pipeline" doc:id="018433cd-5948-4e41-a5f9-74175ef69a3c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+"Github Actions CI/CD Pipeline"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="LOG-Github Actions CI/CD Pipeline completed" doc:id="2480e499-a895-4100-a866-6ed3095f68da" message='#["Github Actions CI/CD Pipeline completed at: "++ now()]'/>
+	</flow>
+</mule>
