@@ -46,8 +46,8 @@ jobs:
         name: artifacts
     - name: Deploy to CloudHub
       env:
-        USERNAME: ${{ secrets.ANYPOINT_USERNAME }}
-        PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
+        USERNAME: ${{ secrets.username }}
+        PASSWORD: ${{ secrets.password }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn package deploy -DmuleDeploy -Danypoint.env=Sandbox -Danypoint.appName=githubactionsci-cdpipeline-dev -Danypoint.username=${{ secrets.ANYPOINT_USERNAME }} -Danypoint.password=${{ secrets.ANYPOINT_PASSWORD }} -Danypoint.muleVersion=4.3.0 -Danypoint.region=us-west-1 -Danypoint.workers=1
