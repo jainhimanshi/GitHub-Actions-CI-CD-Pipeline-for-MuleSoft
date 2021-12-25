@@ -56,4 +56,4 @@ jobs:
         PASSWORD: ${{ secrets.ANYPOINT_PASSWORD }}
       run: |
         artifactName=$(ls *.jar | head -1)
-        mvn package deploy -DmuleDeploy -Danypoint.env=Sandbox -Danypoint.appName=githubactionsci-cdpipeline-test -Danypoint.username=${{ secrets.ANYPOINT_USERNAME }} -Danypoint.password=${{ secrets.ANYPOINT_PASSWORD }} -Danypoint.muleVersion=4.3.0 -Danypoint.region=us-west-1 -Danypoint.workers=1
+        mvn package deploy -DmuleDeploy -Danypoint.env=Sandbox -Danypoint.appName=githubactionsci-cdpipeline-test -Danypoint.username=${{ secrets.ANYPOINT_USERNAME }} -Danypoint.password=${{ secrets.ANYPOINT_PASSWORD }} -Danypoint.muleVersion=4.4.0 -Danypoint.region=us-west-1 -Danypoint.workers=1
