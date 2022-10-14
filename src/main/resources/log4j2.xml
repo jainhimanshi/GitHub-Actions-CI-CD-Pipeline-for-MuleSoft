@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Configuration>
 
-    <!--These are some of the loggers you can enable. 
+    <!--These are some of the loggDFVDSFVSers you can enable. 
         There are several more you can find in the documentation. 
         Besides this log4j configuration, you can also use Java VM environment variables
         to enable other logs like network (-Djavax.net.debug=ssl or all) and 
