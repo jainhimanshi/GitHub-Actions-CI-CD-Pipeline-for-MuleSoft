@@ -19,6 +19,6 @@ output application/json
 "Github Actions CI/CD Pipeline"]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<logger level="INFO" doc:name="LOG-Github Actions CI/CD Pipeline completed" doc:id="2480e499-a895-4100-a866-6ed3095f68da" message='#["Github Actions CI/CD Pipeline completed at: "++ now()]'/>
+		<logger level="INFO" doc:name="LOG-Github Actions CI/CD Pipeline completed" doc:id="2480e499-a895-4100-a866-6ed3095f68da" message='#["Github Actions CI/CD Pipeline completed at : "++ now()]'/>
 	</flow>
 </mule>
